@@ -10,6 +10,13 @@
 
 #pragma once
 
+/**
+ * @brief Class representing an on-board LED controlled via GPIO.
+ *
+ * This class provides methods to initialize the LED, set it up as an output,
+ * and toggle its state.
+ */
+
 class onBoardLed
 {
 	private:

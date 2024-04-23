@@ -23,6 +23,15 @@ static gpio_port_t *obledPort;
 static swdev_t *obled_sp;
 static lock_t obledlock;
 
+/**
+ * @brief Toggle the state of the onboard LED.
+ *
+ * This function toggles the state of the onboard LED by each GPIO pin
+ * It also works accordinlg with locks to protect the state
+ *
+ * @return status_t: Status of the operation
+ */
+
 status_t onboardled_toggle(void)
 {
 	status_t ret = success;
@@ -38,6 +47,14 @@ exit:
 	lock_release(&obledlock);
 	return ret;
 }
+
+/**
+ * @brief Turning on the onboard LED
+ *
+ * This function turns on the onboard LED by setting each of the GPIO pin to high
+ *
+ * @return status_t: Status of the operation
+ */
 
 status_t onboardled_on(void)
 {
@@ -55,6 +72,14 @@ exit:
 	return ret;
 }
 
+/**
+ * @brief Turning off the onboard LED
+ *
+ * This function turns on the onboard LED by setting each of the GPIO pin to low (clearing)
+ *
+ * @return status_t: Status of the operation
+ */
+
 status_t onboardled_off(void)
 {
 	status_t ret = success;
@@ -70,6 +95,14 @@ exit:
 	lock_release(&obledlock);
 	return ret;
 }
+
+/**
+ * @brief Initializes the onboard LED driver
+ *
+ * This function initializes the onboard LED driver by allocating GPIO ports for the LED.
+ *
+ * @return status_t: Status of the initialization
+ */
 
 static status_t onboardled_setup(void)
 {
@@ -106,6 +139,15 @@ exit:
 	lock_release(&obledlock);
 	return ret;
 }
+
+/**
+ * @brief Cleanup and exit the onboard LED driver.
+ *
+ * This function frees allocated GPIO ports and resources associated with the
+ * onboard LED driver.
+ *
+ * @return status_t: Status of the cleanup and exit
+ */
 
 static status_t onboardled_exit(void)
 {

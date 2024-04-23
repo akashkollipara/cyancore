@@ -21,15 +21,15 @@ extern "C"
 	#include <hal/gpio.h>
 }
 
-#include "gpio.h"
+#include "gpio.h" // This has custom GPIO header functions
 
 
-class onBoardLed led;
+class onBoardLed led; 
 
 /* Use EXPORT_C macro for calling cpp function in c file */
 EXPORT_C(void plug())
 {
-	bootstrap();
+	bootstrap(); // calls the system initial bootstrap
 	driver_setup_all();
 
 	/* call the constructor and setup member of led object */
@@ -47,13 +47,13 @@ void delay(unsigned long d)
 {
 	unsigned long c;
 	for(c = 0; c < d; c++)
-		asm volatile("nop");
+		asm volatile("nop"); // provides the assembly instructions to create a general delay
 }
 
 static unsigned char i = 0;
-EXPORT_C(void play())
+EXPORT_C(void play()) // the calling of the continues function check
 {
-	wdog_guard(WDT_64MS, true, NULL);
+	wdog_guard(WDT_64MS, true, NULL); // safety feature if the core hangs or creates interruptions
 
 	/* call the toggle member of led object */
 	led.toggle();
