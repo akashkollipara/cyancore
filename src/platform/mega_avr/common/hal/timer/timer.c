@@ -23,6 +23,18 @@
 #include "timer8.h"
 #include "timer16.h"
 
+/**
+ * timer_setup - Configure timer settings
+ *
+ * @brief Configures timer settings including mode and prescaler
+ *
+ * @param[in] port: Pointer to the timer port structure
+ * @param[in] mode: Timer mode (e.g., PWM, timer)
+ * @param[in] ps: Timer prescaler value
+ *
+ * @return status: Status of timer setup operation
+ */
+
 status_t timer_setup(const timer_port_t *port, unsigned int mode, unsigned int ps)
 {
 	status_t ret;
@@ -55,6 +67,16 @@ status_t timer_setup(const timer_port_t *port, unsigned int mode, unsigned int p
 	return ret;
 }
 
+/**
+ * timer_shutdown - Shutdown timer
+ *
+ * @brief Disables timer and associated interrupts
+ *
+ * @param[in] port: Pointer to the timer port structure
+ *
+ * @return status: Status of timer shutdown operation
+ */
+
 status_t timer_shutdown(const timer_port_t *port)
 {
 	status_t ret = success;
@@ -78,6 +100,17 @@ status_t timer_shutdown(const timer_port_t *port)
 	return ret;
 }
 
+/**
+ * timer_read - Read timer value
+ *
+ * @brief Reads the current value of the timer.
+ *
+ * @param[in] port: Pointer to the timer port structure
+ * @param[out] value: Pointer to store the timer value
+ *
+ * @return status: Status of timer read operation
+ */
+
 status_t timer_read(const timer_port_t *port, size_t *value)
 {
 	unsigned id;
@@ -90,6 +123,17 @@ status_t timer_read(const timer_port_t *port, size_t *value)
 	return success;
 }
 
+/**
+ * timer_pwm_set - Set PWM value
+ *
+ * @brief Sets the PWM value and configuration
+ *
+ * @param[in] port: Pointer to the timer port structure
+ * @param[in] invert: Invert PWM signal if true
+ * @param[in] value: PWM value to set
+ *
+ * @return status: Status of PWM set operation
+ */
 
 status_t timer_pwm_set(const timer_port_t *port, bool invert, size_t value)
 {
@@ -109,4 +153,3 @@ status_t timer_pwm_set(const timer_port_t *port, bool invert, size_t value)
 	}
 	return ret;
 }
-

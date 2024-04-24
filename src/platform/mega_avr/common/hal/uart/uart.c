@@ -24,6 +24,19 @@
 #include <arch.h>
 #include "uart_private.h"
 
+/**
+ * uart_setup - Configure UART port settings
+ *
+ * @brief Configures UART port settings including direction, parity, baud rate,
+ *        interrupt handling, and frame configuration.
+ *
+ * @param[in] port: Pointer to the UART port structure
+ * @param[in] d: Direction of UART communication (trx, rx, tx)
+ * @param[in] p: Parity setting for UART communication
+ *
+ * @return status: Status of UART setup operation
+ */
+
 status_t uart_setup(uart_port_t *port, direction_t d, parity_t p)
 {
 	status_t ret = success;
@@ -91,6 +104,16 @@ uart_setup_exit:
 	return ret;
 }
 
+/**
+ * uart_shutdown - Shutdown UART port
+ *
+ * @brief Disables UART port and associated interrupts
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return status: Status of UART shutdown operation
+ */
+
 status_t uart_shutdown(uart_port_t *port)
 {
 	status_t ret = success;
@@ -109,11 +132,29 @@ status_t uart_shutdown(uart_port_t *port)
 	return ret;
 }
 
+/**
+ * uart_buffer_available - Check if UART buffer is free for transmission
+ *
+ * @brief Checks if UART buffer is available for data transmission.
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return bool: True if UART buffer is available, false otherwise
+ */
+
 bool uart_buffer_available(const uart_port_t *port)
 {
 	assert(port);
 	return (bool)((MMIO8(port->baddr + UCSRA_OFFSET) >> UDRE) & 0x01);
 }
+
+/**
+ * uart_tx_wait_till_done - Wait until UART transmission is done
+ *
+ * @brief Waits until UART transmission is complete
+ *
+ * @param[in] port: Pointer to the UART port structure
+ */
 
 void uart_tx_wait_till_done(const uart_port_t *port)
 {
@@ -123,11 +164,31 @@ void uart_tx_wait_till_done(const uart_port_t *port)
 	MMIO8(port->baddr + UCSRA_OFFSET) |= (1 << TXC);
 }
 
+/**
+ * uart_rx_done - Check if UART reception is complete
+ *
+ * @brief Checks if UART reception is complete.
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return bool: True if UART reception is complete, false otherwise
+ */
+
 bool uart_rx_done(const uart_port_t *port)
 {
 	assert(port);
 	return (bool)((MMIO8(port->baddr + UCSRA_OFFSET) >> RXC) & 0x01);
 }
+
+/**
+ * uart_frame_error - Check if UART frame error occurred
+ *
+ * @brief Checks if UART frame error occurred
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return bool: True if UART frame error occurred, false otherwise
+ */
 
 bool uart_frame_error(const uart_port_t *port)
 {
@@ -138,6 +199,17 @@ bool uart_frame_error(const uart_port_t *port)
 	return ret;
 }
 
+/**
+ * uart_tx - Transmit data over UART
+ *
+ * @brief Function transmits the data over on UART
+ *
+ * @param[in] port: Pointer to the UART port structure
+ * @param[in] data: Data to be transmitted
+ *
+ * @return status: Status of UART transmission operation
+ */
+
 status_t uart_tx(const uart_port_t *port, const char data)
 {
 	STATUS_CHECK_POINTER(port);
@@ -146,6 +218,17 @@ status_t uart_tx(const uart_port_t *port, const char data)
 	MMIO8(port->baddr + UDR_OFFSET) = data;
 	return success;
 }
+
+/**
+ * uart_rx - Receive data over UART
+ *
+ * @brief Receives data over UART.
+ *
+ * @param[in] port: Pointer to the UART port structure
+ * @param[out] data: Pointer to store received data
+ *
+ * @return status: Status of UART reception operation
+ */
 
 status_t uart_rx(const uart_port_t *port, char *data)
 {
@@ -156,12 +239,32 @@ status_t uart_rx(const uart_port_t *port, char *data)
 	return success;
 }
 
+/**
+ * uart_tx_int_en - Enable UART transmission interrupt
+ *
+ * @brief Enables UART transmission interrupt
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return status: Status of UART transmission interrupt enable operation
+ */
+
 status_t uart_tx_int_en(const uart_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + UCSRB_OFFSET) |= (1 << TXCIE);
 	return success;
 }
+
+/**
+ * uart_tx_int_dis - Disable UART transmission interrupt
+ *
+ * @brief Disables UART transmission interrupt
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return status: Status of UART transmission interrupt disable operation
+ */
 
 status_t uart_tx_int_dis(const uart_port_t *port)
 {
@@ -170,12 +273,32 @@ status_t uart_tx_int_dis(const uart_port_t *port)
 	return success;
 }
 
+/**
+ * uart_rx_int_en - Enable UART reception interrupt
+ *
+ * @brief Enables UART reception interrupt
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return status: Status of UART reception interrupt enable operation
+ */
+
 status_t uart_rx_int_en(const uart_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + UCSRB_OFFSET) |= (1 << RXCIE);
 	return success;
 }
+
+/**
+ * uart_rx_int_dis - Disable UART reception interrupt
+ *
+ * @brief Disables UART reception interrupt
+ *
+ * @param[in] port: Pointer to the UART port structure
+ *
+ * @return status: Status of UART reception interrupt disable operation
+ */
 
 status_t uart_rx_int_dis(const uart_port_t *port)
 {

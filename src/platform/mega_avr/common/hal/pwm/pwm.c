@@ -19,6 +19,15 @@
 #include <hal/timer.h>
 #include <hal/pwm.h>
 
+/**
+ * pwm_to_timer - Convert PWM port to Timer port
+ *
+ * @brief Converts PWM port structure to Timer port structure
+ *
+ * @param[in] p: Pointer to the PWM port structure
+ * @param[out] t: Pointer to the Timer port structure
+ */
+
 static void pwm_to_timer(const pwm_port_t *p, timer_port_t *t)
 {
 	t->port_id = p->port_id;
@@ -28,6 +37,17 @@ static void pwm_to_timer(const pwm_port_t *p, timer_port_t *t)
 	t->tmr_irq = p->pwm_irq->id;
 	t->tmr_handler = p->pwm_handler;
 }
+
+/**
+ * pwm_get_properties - Get PWM properties
+ *
+ * @brief Retrieves PWM properties and maps them to the PWM port structure.
+ *
+ * @param[out] port: Pointer to the PWM port structure
+ * @param[in] dev: Software device ID
+ *
+ * @return status: Status of PWM properties retrieval operation
+ */
 
 status_t pwm_get_properties(pwm_port_t *port, sw_devid_t dev)
 {
@@ -62,6 +82,17 @@ status_t pwm_get_properties(pwm_port_t *port, sw_devid_t dev)
 	return success;
 }
 
+/**
+ * pwm_setup - Configure PWM settings
+ *
+ * @brief Configures PWM settings using the associated Timer port
+ *
+ * @param[in] port: Pointer to the PWM port structure
+ * @param[in] mode: PWM mode (e.g., PWM, timer)
+ *
+ * @return status: Status of PWM setup operation
+ */
+
 status_t pwm_setup(const pwm_port_t *port, unsigned int mode)
 {
 	status_t ret;
@@ -80,6 +111,18 @@ status_t pwm_setup(const pwm_port_t *port, unsigned int mode)
 
 	return ret;
 }
+
+/**
+ * pwm_set - Set PWM value
+ *
+ * @brief Sets the PWM value using the associated Timer port
+ *
+ * @param[in] port: Pointer to the PWM port structure
+ * @param[in] value: PWM value to set
+ * @param[in] invert: Invert PWM signal if true
+ *
+ * @return status: Status of PWM set operation
+ */
 
 status_t pwm_set(const pwm_port_t *port, size_t value, bool invert)
 {
