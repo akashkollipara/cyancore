@@ -1,10 +1,12 @@
-# Folder Structure
-This folder contains platform specific programs for megaAVR family of controllers.
+# MegaAVR Family
+This folder contains platform specific programs for MegaAVR family of controllers.
 
-Some differences between the two AVR microcontrollers:
+## Some differences between the two AVR microcontrollers:
 
-Atmega 328p: It has 32KB of Flash memory, 1KB of SRAM, and 1KB of EEPROM. It provides 23 general-purpose I/O pins.
-Atmega 2560: It has 256KB of Flash memory, 8KB of SRAM, and 4KB of EEPROM. It provides 86 general-purpose I/O pins. Has advanced PWM channels.
+| Controller | CPU | Memory (SRAM) | Flash | EEPROM | GPIO |
+|---|---|---|---|---|---|
+| AtMega328P | AVR5-8b | 2KB | 32KB | 1KB | 23 |
+| AtMega2560 | AVR6-8b | 8KB | 256KB | 4KB | 86 |
 
 ## Directories Overview
 | Folder                | Description                                                   |
