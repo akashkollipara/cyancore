@@ -21,15 +21,41 @@
 #include <syslog.h>
 #include "adc_private.h"
 
+/**
+ * _adc_enable - Enables ADC
+ *
+ * @brief Enables the ADC peripheral
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ */
+
 static inline void _adc_enable(adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) |= (1 << ADEN);
 }
 
+/**
+ * _adc_disable - Disables ADC
+ *
+ * @brief Disables the ADC peripheral
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ */
+
 static inline void _adc_disable(adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) &= ~(1 << ADEN);
 }
+
+/**
+ * _adc_set_prescaler - Sets ADC prescaler
+ *
+ * @brief Sets the ADC prescaler value based on the clock frequency specific in the port
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ *
+ * @return status: Status of prescaler setup operation
+ */
 
 static inline status_t _adc_set_prescaler(adc_port_t *port)
 {
@@ -65,10 +91,29 @@ static inline status_t _adc_set_prescaler(adc_port_t *port)
 	return ret;
 }
 
+/**
+ * _adc_start_conv - Starts ADC conversion
+ *
+ * @brief Initiates ADC conversion process
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ */
+
 static inline void _adc_start_conv(adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) |= (1 << ADSC);
 }
+
+/**
+ * _adc_config_trigger - Configures ADC trigger mode
+ *
+ * @brief Configures the ADC trigger mode for conversion
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ * @param[in] trigger: ADC trigger mode
+ *
+ * @return status: Status of trigger configuration operation
+ */
 
 static inline status_t _adc_config_trigger(adc_port_t *port, adc_trig_t trigger)
 {
@@ -81,6 +126,17 @@ static inline status_t _adc_config_trigger(adc_port_t *port, adc_trig_t trigger)
 	return ret;
 }
 
+/**
+ * _adc_config_resolution - Configures ADC resolution
+ *
+ * @brief Configures the ADC resolution (8-bit | 10-bit)
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ * @param[in] resolution: ADC resolution wanted
+ *
+ * @return status: Status of resolution configuration operation
+ */
+
 static inline status_t _adc_config_resolution(adc_port_t *port, uint8_t resolution)
 {
 	status_t ret = success;
@@ -90,6 +146,17 @@ static inline status_t _adc_config_resolution(adc_port_t *port, uint8_t resoluti
 		ret = error_func_inval_arg;
 	return ret;
 }
+
+/**
+ * _adc_config_vref - Configures ADC voltage reference
+ *
+ * @brief Configures the ADC voltage reference source based on specific reference source
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ * @param[in] vref: ADC voltage reference source
+ *
+ * @return status: Status of voltage reference configuration operation
+ */
 
 static inline status_t _adc_config_vref(adc_port_t *port, adc_ref_t vref)
 {
@@ -114,6 +181,16 @@ static inline status_t _adc_config_vref(adc_port_t *port, adc_ref_t vref)
 	return ret;
 }
 
+/**
+ * adc_setup - Setups ADC
+ *
+ * @brief Initializes and configures the ADC peripheral
+ *
+ * @param[out] port: Pointer to the ADC port structure
+ *
+ * @return status: Status of setup operation
+ */
+
 status_t adc_setup(adc_port_t *port)
 {
 	status_t ret = success;
@@ -129,6 +206,16 @@ status_t adc_setup(adc_port_t *port)
 	return ret;
 }
 
+/**
+ * adc_shutdown - Shutdown ADC
+ *
+ * @brief Disables and shuts down the ADC peripheral
+ *
+ * @param[out] port: Pointer to the ADC port structure
+ *
+ * @return status: Status of shutdown operation
+ */
+
 status_t adc_shutdown(adc_port_t *port)
 {
 	status_t ret = success;
@@ -139,6 +226,16 @@ status_t adc_shutdown(adc_port_t *port)
 	return ret;
 }
 
+/**
+ * adc_busy - Checks ADC busy state
+ *
+ * @brief Checks if the ADC is currently busy
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ *
+ * @return state: State of ADC busy status
+ */
+
 bool adc_busy(adc_port_t *port)
 {
 	bool ret;
@@ -147,6 +244,16 @@ bool adc_busy(adc_port_t *port)
 	return ret;
 }
 
+/**
+ * adc_int_en - Enables ADC interrupts
+ *
+ * @brief Enables ADC interrupts for the specified ADC port
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ *
+ * @return status: Status of interrupt enable operation
+ */
+
 status_t adc_int_en(adc_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
@@ -154,12 +261,36 @@ status_t adc_int_en(adc_port_t *port)
 	return success;
 }
 
+/**
+ * adc_int_dis - Disables ADC interrupts
+ *
+ * @brief Disables ADC interrupts for the specified ADC port
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ *
+ * @return status: Status of interrupt disable operation
+ */
+
 status_t adc_int_dis(adc_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + ADCSRA_OFFSET) &= ~(1 << ADIE);
 	return success;
 }
+
+/**
+ * adc_config_pin - Configures ADC pin parameters
+ *
+ * @brief Configures ADC pin settings for conversion
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ * @param[in] pin: ADC pin to configure
+ * @param[in] trigger: ADC trigger mode
+ * @param[in] resolution: ADC resolution (8 or 10 bits)
+ * @param[in] vref: ADC voltage reference source
+ *
+ * @return status: Status of pin configuration operation
+ */
 
 status_t adc_config_pin(adc_port_t *port, uint8_t pin, adc_trig_t trigger, uint8_t resolution, adc_ref_t vref)
 {
@@ -174,6 +305,17 @@ status_t adc_config_pin(adc_port_t *port, uint8_t pin, adc_trig_t trigger, uint8
 	_adc_start_conv(port);
 	return ret;
 }
+
+/**
+ * adc_read - Reads ADC conversion result
+ *
+ * @brief Reads the ADC conversion result from the specified ADC port
+ *
+ * @param[in] port: Pointer to the ADC port structure
+ * @param[out] adc_val: Pointer to store the ADC conversion value
+ *
+ * @return status: Status of read operation
+ */
 
 status_t adc_read(adc_port_t *port, uint16_t *adc_val)
 {
@@ -194,6 +336,17 @@ status_t adc_read(adc_port_t *port, uint16_t *adc_val)
 	MMIO8(port->baddr + ADMUX_OFFSET) &= ~((3 << REFS) | (1 << ADLAR));
 	return ret;
 }
+
+/**
+ * adc_temperature_convert - Converts ADC raw value to temperature
+ *
+ * @brief Converts the raw ADC value to temperature in Celsius
+ *
+ * @param[in] raw_adc: Raw ADC value
+ * @param[out] temperature: Pointer to store the temperature value
+ *
+ * @return status: Status of temperature conversion operation
+ */
 
 status_t adc_temperature_convert(uint16_t raw_adc, float *temperature)
 {

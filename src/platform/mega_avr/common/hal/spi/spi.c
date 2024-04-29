@@ -20,6 +20,18 @@
 #include <hal/spi.h>
 #include "spi_private.h"
 
+/**
+ * spi_master_setup - Setups SPI master mode
+ *
+ * @brief Initializes SPI in master mode with specified settings
+ *
+ * @param[out] port: Pointer to the SPI port structure
+ * @param[in] df_format: Data frame format
+ * @param[in] cpol: Clock polarity
+ * @param[in] cpha: Clock phase
+ *
+ * @return status: Status of master setup operation
+ */
 
 status_t spi_master_setup(spi_port_t *port, dataframe_format_t df_format, clk_pol_t cpol, clk_ph_t cpha)
 {
@@ -64,6 +76,19 @@ status_t spi_master_setup(spi_port_t *port, dataframe_format_t df_format, clk_po
 	return ret;
 }
 
+/**
+ * spi_slave_setup - Setups SPI slave mode
+ *
+ * @brief Initializes SPI in slave mode with specified settings
+ *
+ * @param[out] port: Pointer to the SPI port structure
+ * @param[in] df_format: Data frame format
+ * @param[in] cpol: Clock polarity
+ * @param[in] cpha: Clock phase
+ *
+ * @return status: Status of slave setup operation
+ */
+
 status_t spi_slave_setup(spi_port_t *port, dataframe_format_t df_format, clk_pol_t cpol, clk_ph_t cpha)
 {
 	status_t ret = success;
@@ -107,17 +132,47 @@ status_t spi_slave_setup(spi_port_t *port, dataframe_format_t df_format, clk_pol
 	return ret;
 }
 
+/**
+ * spi_wcol_error - Checks SPI write collision error
+ *
+ * @brief Checks if a write collision error occurred during SPI communication
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ *
+ * @return state: State of the write collision error (true = error, false = no error)
+ */
+
 bool spi_wcol_error(spi_port_t *port)
 {
 	assert(port);
 	return (MMIO8(port->baddr + SPSR_OFFSET) & (1 << WCOL)) ? true : false;
 }
 
+/**
+ * spi_trx_done - Checks SPI transaction completion
+ *
+ * @brief Checks if an SPI transaction is completed
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ *
+ * @return state: State of the transaction completion (true = completed, false = not completed)
+ */
+
 bool spi_trx_done(spi_port_t *port)
 {
 	assert(port);
 	return (MMIO8(port->baddr + SPSR_OFFSET) & (1 << SPIF)) ? true : false;
 }
+
+/**
+ * spi_int_en - Enables SPI interrupts
+ *
+ * @brief Enables SPI interrupts for the given SPI port
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ *
+ * @return status: Status of interrupt enable operation
+ */
 
 status_t spi_int_en(spi_port_t *port)
 {
@@ -126,6 +181,16 @@ status_t spi_int_en(spi_port_t *port)
 	return success;
 }
 
+/**
+ * spi_int_dis - Disables SPI interrupts
+ *
+ * @brief Disables SPI interrupts for the given SPI port
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ *
+ * @return status: Status of interrupt disable operation
+ */
+
 status_t spi_int_dis(spi_port_t * port)
 {
 	STATUS_CHECK_POINTER(port);
@@ -133,12 +198,34 @@ status_t spi_int_dis(spi_port_t * port)
 	return success;
 }
 
+/**
+ * spi_tx - Transmits data via SPI
+ *
+ * @brief Transmits data via SPI using the given SPI port
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ * @param[in] data: Data to be transmitted
+ *
+ * @return status: Status of data transmission operation
+ */
+
 status_t spi_tx(spi_port_t *port, char data)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + SPDR_OFFSET) = data;
 	return success;
 }
+
+/**
+ * spi_rx - Receives data via SPI
+ *
+ * @brief Receives data via SPI using the given SPI port
+ *
+ * @param[in] port: Pointer to the SPI port structure
+ * @param[out] data: Pointer to store the received data
+ *
+ * @return status: Status of data reception operation
+ */
 
 status_t spi_rx(spi_port_t *port, char *data)
 {

@@ -22,6 +22,18 @@
 #include <hal/gpio.h>
 #include "gpio_private.h"
 
+/**
+ * gpio_pin_alloc - Allocates the needed GPIO pin
+ *
+ * @brief Allocates the GPIO pin and looks for availability
+ *
+ * @param[out] port: Pointer to the GPIO port structure
+ * @param[in] portID: Port ID of the GPIO pin
+ * @param[in] pinID: Pin ID of the GPIO pin
+ *
+ * @return status: Status of allocation operation
+ */
+
 status_t gpio_pin_alloc(gpio_port_t *port, uint8_t portID, uint8_t pinID)
 {
 	vret_t vres;
@@ -59,6 +71,17 @@ status_t gpio_pin_alloc(gpio_port_t *port, uint8_t portID, uint8_t pinID)
 	return success;
 }
 
+/**
+ * gpio_pin_mode - Sets GPIO pin mode
+ *
+ * @brief Sets the mode of a GPIO pin (ex: Input, Output)
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ * @param[in] mode: Specified GPIO setting
+ *
+ * @return status: Status of mode setting operation
+ */
+
 status_t gpio_pin_mode(const gpio_port_t *port, gpio_mode_t mode)
 {
 	uintptr_t pbaddr;
@@ -82,6 +105,16 @@ status_t gpio_pin_mode(const gpio_port_t *port, gpio_mode_t mode)
 	return success;
 }
 
+/**
+ * gpio_pin_free - Frees specific GPIO pin
+ *
+ * @brief Frees a previously allocated GPIO pin
+ *
+ * @param[out] port: Pointer to the GPIO port structure
+ *
+ * @return status: Status of freeing operation
+ */
+
 status_t gpio_pin_free(gpio_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
@@ -95,12 +128,32 @@ status_t gpio_pin_free(gpio_port_t *port)
 	return success;
 }
 
+/**
+ * gpio_pin_set - Sets a GPIO pin high
+ *
+ * @brief Sets a GPIO pin to high logic level by setting appropriate bit in the control register
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ *
+ * @return status: Status of setting operation
+ */
+
 status_t gpio_pin_set(const gpio_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->pbaddr + PORT_OFFSET) |= (1 << port->pin);
 	return success;
 }
+
+/**
+ * gpio_pin_clear - Sets a GPIO pin low
+ *
+ * @brief Sets a GPIO pin to low logic level by setting appropriate bit in the control register
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ *
+ * @return status: Status of clearing operation
+ */
 
 status_t gpio_pin_clear(const gpio_port_t *port)
 {
@@ -109,6 +162,16 @@ status_t gpio_pin_clear(const gpio_port_t *port)
 	return success;
 }
 
+/**
+ * gpio_pin_toggle - Toggles a GPIO pin state
+ *
+ * @brief Toggles the state of a GPIO pin (high to low)
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ *
+ * @return status: Status of toggling operation
+ */
+
 status_t gpio_pin_toggle(const gpio_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
@@ -116,11 +179,32 @@ status_t gpio_pin_toggle(const gpio_port_t *port)
 	return success;
 }
 
+/**
+ * gpio_pin_read - Reads a GPIO pin state
+ *
+ * @brief Reads the state of a GPIO pin (high or low)
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ *
+ * @return state: State of the GPIO pin depending on high, low for true, false
+ */
+
 bool gpio_pin_read(const gpio_port_t *port)
 {
 	assert(port);
 	return (MMIO8(port->pbaddr + PIN_OFFSET) & (1 << port->pin)) ? true : false;
 }
+
+/**
+ * gpio_port_alloc - Allocates a GPIO port
+ *
+ * @brief Allocates a GPIO port and checks for availability different from needing pinID
+ *
+ * @param[out] port: Pointer to the GPIO port structure
+ * @param[in] portID: Port ID of the GPIO port
+ *
+ * @return status: Status of allocation operation
+ */
 
 status_t gpio_port_alloc(gpio_port_t *port, uint8_t portID)
 {
@@ -157,6 +241,17 @@ status_t gpio_port_alloc(gpio_port_t *port, uint8_t portID)
 	return success;
 }
 
+/**
+ * gpio_port_mode - Sets GPIO port mode
+ *
+ * @brief Sets the mode of a GPIO port (ex: input, output, pull_up)
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ * @param[in] mode: GPIO mode to set
+ *
+ * @return status: Status of mode setting operation
+ */
+
 status_t gpio_port_mode(const gpio_port_t *port, gpio_mode_t mode)
 {
 	uintptr_t pbaddr;
@@ -180,6 +275,16 @@ status_t gpio_port_mode(const gpio_port_t *port, gpio_mode_t mode)
 	return success;
 }
 
+/**
+ * gpio_port_free - Frees a GPIO port
+ *
+ * @brief Frees a previously allocated GPIO port different from freeing pin
+ *
+ * @param[out] port: Pointer to the GPIO port structure
+ *
+ * @return status: Status of freeing operation
+ */
+
 status_t gpio_port_free(gpio_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
@@ -193,6 +298,17 @@ status_t gpio_port_free(gpio_port_t *port)
 	return success;
 }
 
+/**
+ * gpio_port_write - Writes to a GPIO port
+ *
+ * @brief Writes data to a GPIO port
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ * @param[in] val: Data to write to the port
+ *
+ * @return status: Status of writing operation
+ */
+
 status_t gpio_port_write(const gpio_port_t *port, gpio_parallel_t val)
 {
 	STATUS_CHECK_POINTER(port);
@@ -200,6 +316,17 @@ status_t gpio_port_write(const gpio_port_t *port, gpio_parallel_t val)
 	MMIO8(port->pbaddr + PORT_OFFSET) = (uint8_t)(val & 0xff);
 	return success;
 }
+
+/**
+ * gpio_port_read - Reads from a GPIO port
+ *
+ * @brief Reads data from a GPIO port
+ *
+ * @param[in] port: Pointer to the GPIO port structure
+ * @param[out] val: Variable to store the read data
+ *
+ * @return status: Status of reading operation
+ */
 
 status_t gpio_port_read(const gpio_port_t *port, gpio_parallel_t *val)
 {
