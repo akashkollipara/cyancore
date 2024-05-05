@@ -9,5 +9,3 @@
  */
 
 #pragma once
-
-/* Question: Process for ifndef and define and endif? ex: #define _SPI_PRIVATE_H_ */
