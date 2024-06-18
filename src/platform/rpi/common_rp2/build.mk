@@ -22,5 +22,6 @@ LOCAL_INTERRUPT_DEVICE	?= 0
 PLAT_INTERRUPT_DEVICE	?= 0
 
 include $(RP2_COMMON_DIR)/arch/build.mk
+include $(RP2_COMMON_DIR)/flash/build.mk
 #include $(RP2_COMMON_DIR)/hal/build.mk
 include $(RP2_COMMON_DIR)/platform/build.mk
