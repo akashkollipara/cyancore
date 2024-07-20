@@ -85,7 +85,7 @@ static inline void pll_config_for_nearest_freq(unsigned int base, unsigned int c
 	}
 }
 
-status_t _NOINLINE prci_pll_get_clk(sysclk_port_t *port, unsigned int *clk)
+status_t _NOINLINE prci_pll_get_clk(const sysclk_port_t *port, unsigned int *clk)
 {
 	pllc_t *config = &pllc[arch_core_index()];
 	unsigned int pllref, refr, vco, pllout;
@@ -115,7 +115,7 @@ status_t _NOINLINE prci_pll_get_clk(sysclk_port_t *port, unsigned int *clk)
 	return success;
 }
 
-static inline void prci_pll_wait_to_lock(sysclk_port_t *port)
+static inline void prci_pll_wait_to_lock(const sysclk_port_t *port)
 {
 	uint64_t t = clint_read_time();
 	while((uint32_t)(clint_read_time() - t) < 10)
@@ -124,7 +124,7 @@ static inline void prci_pll_wait_to_lock(sysclk_port_t *port)
 		arch_dsb();
 }
 
-static inline void prci_pll_write_config(sysclk_port_t *port, const pllc_t *conf)
+static inline void prci_pll_write_config(const sysclk_port_t *port, const pllc_t *conf)
 {
 	if(!conf->found)
 		return;
@@ -152,7 +152,7 @@ static inline void prci_pll_write_config(sysclk_port_t *port, const pllc_t *conf
 	return;
 }
 
-void _NOINLINE prci_pll_set_clk(sysclk_port_t *port, unsigned int clk)
+void _NOINLINE prci_pll_set_clk(const sysclk_port_t *port, unsigned int clk)
 {
 	pllc_t *conf = &pllc[arch_core_index()];
 	pll_config_for_nearest_freq(port->base_clk, clk, conf);
@@ -161,37 +161,37 @@ void _NOINLINE prci_pll_set_clk(sysclk_port_t *port, unsigned int clk)
 	return;
 }
 
-void _NOINLINE prci_pll_select_xosc(sysclk_port_t *port)
+void _NOINLINE prci_pll_select_xosc(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) |= (1 << PLLREFSEL);
 	return;
 }
 
-void _NOINLINE prci_pll_select_rosc(sysclk_port_t *port)
+void _NOINLINE prci_pll_select_rosc(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) &= ~(1 << PLLREFSEL);
 	return;
 }
 
-void _NOINLINE prci_pll_select_pll(sysclk_port_t *port)
+void _NOINLINE prci_pll_select_pll(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) |= (1 << PLLSEL);
 	return;
 }
 
-void _NOINLINE prci_pll_deselect_pll(sysclk_port_t *port)
+void _NOINLINE prci_pll_deselect_pll(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) &= ~(1 << PLLSEL);
 	return;
 }
 
-void _NOINLINE prci_pll_bypass(sysclk_port_t *port)
+void _NOINLINE prci_pll_bypass(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) |= (1 << PLLBYPASS);
 	return;
 }
 
-void _NOINLINE prci_pll_inline(sysclk_port_t *port)
+void _NOINLINE prci_pll_inline(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + PLLCFG_OFFSET) &= ~(1 << PLLBYPASS);
 	return;

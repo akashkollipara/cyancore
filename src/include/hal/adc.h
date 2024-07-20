@@ -47,10 +47,10 @@ typedef struct adc_port
 } adc_port_t;
 
 status_t adc_setup(adc_port_t *);
-status_t adc_shutdown(adc_port_t *);
-bool adc_busy(adc_port_t *);
-status_t adc_int_en(adc_port_t *);
-status_t adc_int_dis(adc_port_t *);
-status_t adc_config_pin(adc_port_t *, uint8_t, adc_trig_t, uint8_t, adc_ref_t);
-status_t adc_read(adc_port_t *, uint16_t *);
+status_t adc_shutdown(const adc_port_t *);
+bool adc_busy(const adc_port_t *);
+status_t adc_int_en(const adc_port_t *);
+status_t adc_int_dis(const adc_port_t *);
+status_t adc_config_pin(const adc_port_t *, uint8_t, adc_trig_t, uint8_t, adc_ref_t);
+status_t adc_read(const adc_port_t *, uint16_t *);
 status_t adc_temperature_convert(uint16_t, float *);

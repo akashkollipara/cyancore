@@ -108,7 +108,7 @@ INCLUDE_DRIVER(sysclk_prci, sysclk_setup, sysclk_disable, 0, 1, 1);
 status_t sysclk_reset()
 {
 	status_t ret;
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	istate_t ist;
 
 	RET_ON_FAIL(port && port->baddr && port->base_clk,
@@ -133,7 +133,7 @@ status_t sysclk_reset()
 static inline void sysclk_set_internal(unsigned int clk _UNUSED)
 {
 	status_t ret;
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	ret = prci_hfxocs_enable(port);
 	prci_pll_bypass(port);
 	ret |= prci_hfosc_enable(port);
@@ -150,7 +150,7 @@ static inline void sysclk_set_internal(unsigned int clk _UNUSED)
 static inline void sysclk_set_external(void)
 {
 	status_t ret;
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	ret = prci_hfosc_enable(port);
 	ret |= prci_hfxocs_enable(port);
 	prci_pll_select_xosc(port);
@@ -165,7 +165,7 @@ static inline void sysclk_set_external(void)
 static inline void sysclk_set_pll(unsigned int clk)
 {
 	status_t ret;
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	ret = prci_hfosc_enable(port);
 	ret |= prci_hfxocs_enable(port);
 	prci_pll_bypass(port);
@@ -181,7 +181,7 @@ static inline void sysclk_set_pll(unsigned int clk)
 
 static void sysclk_configure_clk(call_arg_t a0, call_arg_t a1, call_arg_t a2 _UNUSED, vret_t *ret)
 {
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	istate_t ist;
 	clock_type_t type = (clock_type_t) a0;
 	unsigned int clk = (unsigned int) a1;
@@ -227,7 +227,7 @@ INCLUDE_VCALL(sysclk_set, config_clk, sysclk_configure_clk);
 static void sysclk_get_freq(call_arg_t a0 _UNUSED, call_arg_t a1 _UNUSED, 
 		call_arg_t a2 _UNUSED, vret_t *ret)
 {
-	sysclk_port_t *port = sysclk;
+	const sysclk_port_t *port = sysclk;
 	istate_t ist;
 	unsigned int getclk;
 

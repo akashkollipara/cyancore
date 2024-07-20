@@ -49,8 +49,8 @@ typedef struct spi_port
 
 status_t spi_master_setup(spi_port_t *, dataframe_format_t, clk_pol_t, clk_ph_t);
 status_t spi_slave_setup(spi_port_t *, dataframe_format_t, clk_pol_t, clk_ph_t);
-bool spi_trx_done(spi_port_t *);
+bool spi_trx_done(const spi_port_t *);
 status_t spi_int_en(spi_port_t *);
 status_t spi_int_dis(spi_port_t *);
-status_t spi_tx(spi_port_t *, char);
-status_t spi_rx(spi_port_t *, char *);
+status_t spi_tx(const spi_port_t *, char);
+status_t spi_rx(const spi_port_t *, char *);

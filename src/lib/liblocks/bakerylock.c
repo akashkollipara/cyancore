@@ -10,10 +10,10 @@ void bakerylock_acquire(bakerylock_t *key)
 	key->protect[tid] = 1;
 	arch_dmb();
 
-	unsigned int i, n_cust, n_max = 0;
+	unsigned int i, n_max = 0;
 	for(i = 0; i < N_CORES; i++)
 	{
-		n_cust = key->thread_count[i];
+		size_t n_cust = key->thread_count[i];
 		n_max = n_cust > n_max ? n_cust : n_max;
 	}
 
