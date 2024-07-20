@@ -11,7 +11,7 @@
 #include <status.h>
 #include <stdio.h>
 #include <string.h>
-#include <terravisor/bootstrap.h>
+#include <visor/bootstrap.h>
 #include <driver.h>
 #include <driver/onboardled.h>
 #include <time.h>

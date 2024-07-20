@@ -9,9 +9,9 @@
  */
 #include <stdio.h>
 #include <driver.h>
-#include <terravisor/bootstrap.h>
+#include <visor/bootstrap.h>
 #include <driver/onboardled.h>
-#include <terravisor/helios/helios.h>
+#include <visor/helios/helios.h>
 
 #define TASK_WAIT_TICKS		10
 

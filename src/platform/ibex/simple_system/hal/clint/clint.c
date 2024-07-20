@@ -61,9 +61,13 @@ status_t clint_config_tcmp(size_t core_id, uint64_t value)
 
 uint64_t clint_read_time()
 {
-	uint64_t time_stamp;
-	time_stamp = MMIO64(port->baddr + MTIME_OFFSET);
-	return time_stamp;
+	uint32_t temp, tl, th;
+	do {
+		temp = MMIO32(port->baddr + MTIME_OFFSET + 4);
+		tl = MMIO32(port->baddr + MTIME_OFFSET);
+		th = MMIO32(port->baddr + MTIME_OFFSET + 4);
+	} while(temp != th);
+	return ((uint64_t)th << 32) | (uint64_t)(tl);
 }
 
 INCLUDE_DRIVER(plat_clint, clint_setup, clint_exit, 0, 0, 0);

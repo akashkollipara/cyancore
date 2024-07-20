@@ -7,4 +7,4 @@ Home directory for CPU architecture specific sources.
 #### Supported Architectures
 * AVR
 * RISCV
-* ARM [Coming Soon]
+* ARM-M
