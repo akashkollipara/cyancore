@@ -142,7 +142,7 @@ status_t spi_slave_setup(spi_port_t *port, dataframe_format_t df_format, clk_pol
  * @return state: State of the write collision error (true = error, false = no error)
  */
 
-bool spi_wcol_error(spi_port_t *port)
+bool spi_wcol_error(const spi_port_t *port)
 {
 	assert(port);
 	return (MMIO8(port->baddr + SPSR_OFFSET) & (1 << WCOL)) ? true : false;
@@ -158,7 +158,7 @@ bool spi_wcol_error(spi_port_t *port)
  * @return state: State of the transaction completion (true = completed, false = not completed)
  */
 
-bool spi_trx_done(spi_port_t *port)
+bool spi_trx_done(const spi_port_t *port)
 {
 	assert(port);
 	return (MMIO8(port->baddr + SPSR_OFFSET) & (1 << SPIF)) ? true : false;
@@ -209,7 +209,7 @@ status_t spi_int_dis(spi_port_t * port)
  * @return status: Status of data transmission operation
  */
 
-status_t spi_tx(spi_port_t *port, char data)
+status_t spi_tx(const spi_port_t *port, char data)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + SPDR_OFFSET) = data;
@@ -227,7 +227,7 @@ status_t spi_tx(spi_port_t *port, char data)
  * @return status: Status of data reception operation
  */
 
-status_t spi_rx(spi_port_t *port, char *data)
+status_t spi_rx(const spi_port_t *port, char *data)
 {
 	STATUS_CHECK_POINTER(port);
 	STATUS_CHECK_POINTER(data);

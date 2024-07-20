@@ -161,7 +161,7 @@ void *realloc(void *p, size_t n_bytes)
 		return NULL;
 	}
 
-	chunk_t *header = get_header(p);
+	const chunk_t *header = get_header(p);
 	void *new_p = malloc(n_bytes);
 	if(!new_p)
 		return NULL;

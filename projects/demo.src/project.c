@@ -29,7 +29,7 @@ void plug()
 void play()
 {
 	static unsigned char i = 0;
-	char progress[] = "-\\|/";
+	const char progress[] = "-\\|/";
 	uint64_t time;
 	char c = progress[(i++) % strlen(progress)];
 	get_timestamp(&time);
