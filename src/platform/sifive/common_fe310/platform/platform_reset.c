@@ -19,7 +19,7 @@
 #include <aon.h>
 #include <driver/watchdog.h>
 #include <platform.h>
-#include <terravisor/platform.h>
+#include <visor/platform.h>
 
 /**
  * platform_get_reset_syndrome - returns the cause of reset

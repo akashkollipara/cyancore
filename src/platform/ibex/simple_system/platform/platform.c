@@ -16,7 +16,7 @@
 #include <driver.h>
 #include <syslog.h>
 #include <insignia.h>
-#include <terravisor/platform.h>
+#include <visor/platform.h>
 #include <visor/workers.h>
 #include <platform.h>
 #include <mmio.h>

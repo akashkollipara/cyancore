@@ -10,7 +10,7 @@
 
 #include <status.h>
 #include <syslog.h>
-#include <terravisor/bootstrap.h>
+#include <visor/bootstrap.h>
 #include <arch.h>
 #include <driver.h>
 #include <interrupt.h>

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <terravisor/bootstrap.h>
+#include <visor/bootstrap.h>
 #include <driver.h>
 #include <time.h>
 #include <platform.h>

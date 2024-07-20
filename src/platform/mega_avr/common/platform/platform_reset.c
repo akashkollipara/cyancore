@@ -14,7 +14,7 @@
 #include <syslog.h>
 #include <platform.h>
 #include <driver/watchdog.h>
-#include <terravisor/platform.h>
+#include <visor/platform.h>
 
 extern uint8_t reset_syndrome;
 

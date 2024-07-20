@@ -13,8 +13,8 @@ extern "C"
 {
 	#include <stdio.h>
 	#include <status.h>
-	#include <terravisor/platform.h>
-	#include <terravisor/bootstrap.h>
+	#include <visor/platform.h>
+	#include <visor/bootstrap.h>
 	#include <driver.h>
 	#include <driver/watchdog.h>
 	#include <platform.h>

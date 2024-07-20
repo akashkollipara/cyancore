@@ -15,7 +15,7 @@
 #include <status.h>
 #include <arch.h>
 #include <visor_call.h>
-#include <terravisor/platform.h>
+#include <visor/platform.h>
 #include <visor/workers.h>
 #include <driver.h>
 #include <syslog.h>
