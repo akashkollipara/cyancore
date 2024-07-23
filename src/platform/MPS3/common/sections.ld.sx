@@ -1,0 +1,157 @@
+/*
+ * CYANCORE LICENSE
+ * Copyrights (C) 2019, Cyancore Team
+ *
+ * File Name		: sections.ld.sx
+ * Description		: This file contains memory layout for the
+ *			  cyancore framework
+ * Primary Author	: Akash Kollipara [akashkollipara@gmail.com]
+ * Organisation		: Cyancore Core-Team
+ */
+
+#include <plat_mem.h>
+#include <linker_macros.h>
+
+#ifndef L_MEM_START
+#define L_MEM_START	0
+#endif
+
+MEMORY
+{
+	/* VM Addresses */
+	vma_itmem (airwx)	: ORIGIN = V_ITMEM_START, LENGTH = ITMEM_LENGTH
+	vma_imem (irx!aw)	: ORIGIN = V_IMEM_START, LENGTH = IMEM_LENGTH
+	vma_dmem (arw!xi)	: ORIGIN = V_DMEM_START, LENGTH = DMEM_LENGTH
+
+	/* LM Addresses */
+	lma_mem			: ORIGIN = L_MEM_START, LENGTH = L_MEM_LENGTH
+}
+
+ENTRY(entry)
+
+SECTIONS
+{
+	.text : ALIGN(4)
+	{
+		KEEP(*(.text.entry))
+		*(.text)
+		*(.text.*)
+		. = ALIGN(8);
+	} > vma_imem AT > lma_mem
+
+	.rodata : ALIGN(4)
+	{
+		*(.version)
+		KEEP(*(.version))
+		KEEP(*(.rdata))
+		KEEP(*(.rodata))
+		*(.rodata.*)
+		*(.srodata)
+		*(.srodata.*)
+		KEEP(*(.srodata))
+		. = ALIGN(8);
+	} > vma_imem AT > lma_mem
+
+	.itim : ALIGN(4)
+	{
+		KEEP(*(.itim))
+		*(.itim.*)
+		. = ALIGN(8);
+	} > vma_itmem AT > lma_mem
+
+	.bss : ALIGN(4)
+	{
+		*(.bss)
+		*(.bss.*)
+		KEEP(*(.bss))
+		*(COMMON)
+	} > vma_dmem
+
+	.static_bss_global : ALIGN(4)
+	{
+		*(.sbss)
+		*(.sbss.*)
+		KEEP(*(.sbss))
+	} > vma_dmem
+
+	.static_global_var :
+	{
+	} > vma_dmem
+
+	.static_data_global : ALIGN(4)
+	{
+		*(.sdata)
+		*(.sdata.*)
+		KEEP(*(.sdata))
+	} > vma_dmem AT > lma_mem
+
+	.data : ALIGN(4)
+	{
+		*(.data)
+		*(.data.*)
+		KEEP(*(.data))
+		DRIVER_TABLE
+		VCALL_TABLE
+	} > vma_dmem AT > lma_mem
+
+	.tdata : ALIGN(4)
+	{
+		*(.tdata)
+		*(.tdata.*)
+		KEEP(*(.tdata))
+	} > vma_dmem AT > lma_mem
+
+	.heap : ALIGN(HEAP_ALIGN)
+	{
+		*(.heap)
+		KEEP(*(.heap))
+		. = . + HEAP_SIZE;
+	} > vma_dmem
+
+	.stack : ALIGN(16)
+	{
+		*(.stack)
+		KEEP(*(.stack))
+		. = . + STACK_SIZE;
+	} > vma_dmem
+
+	PROVIDE(_text_start = ADDR(.text));
+	PROVIDE(_text_size = SIZEOF(.text));
+	PROVIDE(_text_end = _text_start + _text_size - 1);
+
+	PROVIDE(_rodata_start = ADDR(.rodata));
+	PROVIDE(_rodata_size = SIZEOF(.rodata));
+	PROVIDE(_rodata_end = _rodata_start + _rodata_size - 1);
+
+	PROVIDE(_data_start = LOADADDR(.static_data_global));
+	PROVIDE(_data_size = SIZEOF(.data) + SIZEOF(.tdata) + SIZEOF(.static_data_global));
+	PROVIDE(_data_vstart = ADDR(.static_data_global));
+	PROVIDE(_data_vend = _data_vstart + _data_size - 1);
+
+	PROVIDE(_tls_start = ADDR(.tdata));
+	PROVIDE(_global_start = ADDR(.static_global_var) + 0x800);
+	PROVIDE(_stack_size = SIZEOF(.stack));
+	PROVIDE(_stack_end = ADDR(.stack));
+	PROVIDE(_stack_start = _stack_end + _stack_size);
+
+	PROVIDE(_bss_start = ADDR(.bss));
+	PROVIDE(_bss_size = SIZEOF(.bss) + SIZEOF(.static_bss_global));
+	PROVIDE(_bss_end = _bss_start + _bss_size - 1);
+
+	PROVIDE(_heap_start = ADDR(.heap));
+	PROVIDE(_heap_size = SIZEOF(.heap));
+	PROVIDE(_heap_end = _heap_start + _heap_size - 1);
+
+	PROVIDE(_itim_start = LOADADDR(.itim));
+	PROVIDE(_itim_size = SIZEOF(.itim));
+	PROVIDE(_itim_vstart = ADDR(.itim));
+	PROVIDE(_itim_vend = _itim_vstart + _itim_size - (_itim_size ? 1 : 0));
+
+	PROVIDE(_flash_size = _data_size + SIZEOF(.text) + _itim_size + SIZEOF(.rodata));
+	PROVIDE(_ram_size = _bss_size + _data_size + SIZEOF(.stack) + SIZEOF(.heap));
+
+	ASSERT((_flash_size < FLASH_SIZE), "< x > Flash size exceeded ...")
+	ASSERT((_ram_size < RAM_SIZE), "< x > RAM size exceeded ...")
+
+	/DISCARD/ : { *(.comment .trampolines) }
+}
