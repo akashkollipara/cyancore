@@ -7,6 +7,7 @@ tools/
 backup/
 bkp/
 projects/
+.buildcache/
 *.elf
 *.bin
 *.d
