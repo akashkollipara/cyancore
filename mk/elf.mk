@@ -29,7 +29,7 @@ elf: $(ELF)
 .SECONDEXPANSION:
 $(ELF): $(DEP_LIBS) $(DEP_OBJS) $(LD_SCRIPT) $(LD_SUPPLEMENT) | $$(SIZE)
 	@echo "Elf: Generating $(@F) ..."
-	$(LD) -dT $(LD_SCRIPT) $(addprefix -T , $(LD_SUPPLEMENT)) $(LD_FLAGS)	\
+	$(CCACHE) $(LD) -dT $(LD_SCRIPT) $(addprefix -T , $(LD_SUPPLEMENT)) $(LD_FLAGS)	\
 	-Map=$(@:.elf=.map) -o $@ $(filter %.o, $^) $(DEP_LIB_PATH) $(DEP_LIBS_ARG) $(EXLIB_ARGS) -L $(TL) -lgcc
 	$(OD) -Dx -h --wide $@ > $(@:.elf=.lst)
 	$(OC) -O binary $@ $(@:.elf=.bin)
@@ -40,5 +40,5 @@ $(ELF): $(DEP_LIBS) $(DEP_OBJS) $(LD_SCRIPT) $(LD_SUPPLEMENT) | $$(SIZE)
 $(OUT)/%.ld: %.ld.sx
 	mkdir -p $(@D)
 	@echo "Elf: Preprocessing $(@F) ..."
-	$(CC) $(CFLAGS) -E -P -o $@ $<
+	$(CCACHE) $(CC) $(CFLAGS) -E -P -o $@ $<
 

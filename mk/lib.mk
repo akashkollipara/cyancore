@@ -22,7 +22,7 @@ AR_FLAGS	?= rcs
 
 $(LIB): $(LIB_OBJS) | $$(@D)/
 	@echo "Lib: Generating $(@F) ..."
-	$(AR) $(AR_FLAGS) $@ $^
+	$(CCACHE) $(AR) $(AR_FLAGS) $@ $^
 
 LIB_INCLUDE_PATH:=
 LIB_OBJS	:=

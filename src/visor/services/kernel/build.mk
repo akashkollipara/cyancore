@@ -11,4 +11,4 @@
 
 KERNEL_DIR	:= $(GET_PATH)
 
-$(eval $(call check_and_include KHELIOS,$(KERNEL_DIR)/helios/build.mk))
+$(eval $(call check_and_include,KHELIOS,$(KERNEL_DIR)/helios/build.mk))
