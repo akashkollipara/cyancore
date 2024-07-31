@@ -15,11 +15,13 @@
 SHELL		:= /bin/bash
 N_JOBS		?= $(shell grep -c ^processor /proc/cpuinfo)
 HOST_ARCH	:= $(shell lscpu | grep -Po '(?<='Architecture:'        )[^"]*')
+EN_BUILD_CACHE	?= 1
 V		?= 0
 PP		?= 0
 
 include mk/help.mk
 include mk/path.mk
+include mk/ccache.mk
 include mk/tc_get.mk
 include mk/project.mk
 

@@ -31,12 +31,12 @@ jobs:
 
       - name: Fetch Dependencies
         run: |
-          sudo apt install cppcheck -y
+          sudo apt install cppcheck ccache -y
           make get_avr_tc
           make get_riscv_tc
 
       - name: Init CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           debug: true
@@ -51,10 +51,13 @@ jobs:
           make demo_qemu_sifive_e
           make demo_ibex_ss
 
+      - name: Build Cache Stats
+        run: |
+          make show_ccache_stats
+
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
 
       - name: Clean Up
         run: |
-          make clean
-          rm -rf toolchain
+          make clean_workspace

@@ -22,7 +22,7 @@ slib: $(SLIB)
 
 $(SLIB): $(HEADER) $(LIB_OBJS)
 	echo "Generating $(notdir $@) ..."
-	$(LD) --shared -Wl,-soname,$(notdir $@) -o $@ $<
+	$(CCACHE) $(LD) --shared -Wl,-soname,$(notdir $@) -o $@ $<
 
 $(HEADER): --dependency
 	cp $@ $(OUT)

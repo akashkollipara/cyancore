@@ -10,13 +10,15 @@
 #
 
 PLAT_DIR	:= $(GET_PATH)
+FAM_PATH	:= $(PLAT_DIR)/$(FAMILY)
+PLAT_PATH	:= $(FAM_PATH)/$(PLATFORM)
 
-ifeq ($(FAMILY),)
-$(info < ! > Family of chip used in  project is not defined !)
+ifeq ($(realpath $(FAM_PATH)),)
+$(info < ! > Family of chip used in project is not suppoted !)
 $(error < x > Build Failed !)
 endif
-ifeq ($(PLATFORM),)
-$(info < ! > Platform for project is not defined !)
+ifeq ($(realpath $(PLAT_PATH)),)
+$(info < ! > Platform for project is not supported !)
 $(error < x > Build Failed !)
 endif
 
