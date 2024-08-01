@@ -16,7 +16,7 @@ Usage: make [<project_name>|default|...] (V=|PP=|...)\n\
 \n\
 Examples:\n\
 $$ make demo_avr \# Builds project demo_avr\n\
-$$ make clean \# Cleans the build out folder \n\
+$$ make demo_avr clean \# Cleans demo_avr build\n\
 $$ make demo_avr V=1 \# Builds demo_avr with verbose\n\
 $$ make list \# Displays all the available projects\n\
 $$ make get_all_tc \# Fetches all toolchains\n\
@@ -54,7 +54,7 @@ passed. This uses multi threaded build.\n\
 Use this for debug as it will be slow than default.\n\
 ~ clean: Cleans the project build artifacts.\n\
 ~ check: Perform static analysis.\n\
-clean: Cleans all the build artifacts.\n\
+clean_workspace: Cleans workspace to new checkout state.\n\
 list: Displays all the projects available for build.\n\
 get_all_tc: Fetches all Toolchains.\n\
 get_avr_tc: Fetches AVR Toolchain.\n\
