@@ -12,6 +12,10 @@ include mk/path.mk
 
 T_ALLOWLIST	+= get_all_tc get_avr_tc get_arm_tc get_riscv_tc
 
+OSDEPPKGS	:= build-essential pkg-config libusb-1.0-0-dev cppcheck ccache
+OSDEPPKGS	+= tree ninja-build libpixman-1-dev libcairo2-dev libpango1.0-dev
+OSDEPPKGS	+= libjpeg8-dev libgif-dev libglib2.0-dev libgcrypt20-dev python3-venv
+
 # GIT REPO RECOMMENDED
 # Provide git repo path for toolchains for better experience
 ESIZE_REPO	:= https://github.com/VisorFolks/cc_elf_size.git
@@ -19,13 +23,17 @@ AVR_TC_REPO	?= https://github.com/VisorFolks/avr-toolchain
 RISC_V_TC_REPO	?= https://github.com/VisorFolks/risc-v-toolchain
 ARM_TC_REPO	?= https://github.com/VisorFolks/arm-toolchain
 
-get_all_tc: --tc_clear get_avr_tc get_arm_tc get_riscv_tc
+get_all_tc: get_avr_tc get_arm_tc get_riscv_tc
 
---tc_clear:
-	rm -rf $(TOOLS_ROOT)
+--install_os_pkgs:
+	@echo "< ! > Installing workspace dependencies, it may take a while ..."
+	sudo apt-get install $(OSDEPPKGS) -y -qq > /dev/null
+	@echo "< / > Done!"
 
 SIZE	:= $(TOOLS_ROOT)/cc_elf_size/size
-$(SIZE):
+
+.SECONDEXPANSION:
+$(SIZE): | $$(@D)/
 	$(info < ! > Fetching ELF-Size utility ...)
 	cd $(TOOLS_ROOT); git clone $(ESIZE_REPO) --quiet;
 	$(MAKE) -C $(@D)

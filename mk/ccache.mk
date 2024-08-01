@@ -103,15 +103,9 @@ export CCACHE_UMASK
 
 
 ifeq ($(EN_BUILD_CACHE),1)
-CCACHE		:= ccache
+CCACHE		:= $(shell which ccache)
 
 T_ALLOWLIST	+= show_ccache_config show_ccache_stats clean_ccache
-
-CHECK_CCACHE	:= $(shell which $(CCACHE))
-ifeq ($(CHECK_CCACHE),)
-$(info < ! > ccache is not installed!)
-$(error < x > Stopping build.)
-endif
 
 show_ccache_stats:
 ifneq ($(realpath $(CCACHE_LOGFILE)),)
