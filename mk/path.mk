@@ -23,5 +23,5 @@ OUT		?= $(OUT_PATH)/$(PROJECT)
 
 GET_PATH	= $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 
-./%/:
+%/:
 	mkdir -p $@
