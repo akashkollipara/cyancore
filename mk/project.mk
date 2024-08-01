@@ -40,7 +40,7 @@ clean:
 	$(info < ! > Removing $(PROJECT) binaries ...)
 	rm -rf $(OUT)
 
-setup_workspace: $(SIZE) get_qemu get_all_tc
+setup_workspace: | --install_os_pkgs $(SIZE) get_all_tc
 
 clean_workspace: clean
 	$(info < / > Cleaning up workspace ...)

@@ -17,6 +17,10 @@ QEMU_OUT_PATH	:= $(TOOLS_ROOT)/cc_qemu
 QEMU_TLIST	:= avr-softmmu arm-softmmu aarch64-softmmu
 QEMU_TLIST	+= riscv32-softmmu riscv64-softmmu x86_64-softmmu
 
+ifneq ($(V),1)
+QEMU_QUIET	:= 2> /dev/null 1> /dev/null
+endif
+
 get_qemu: $(QEMU_OUT_PATH)
 
 $(TOOLS_ROOT)/qemu:
@@ -34,8 +38,8 @@ c		:= ,
 $(QEMU_OUT_PATH): $(QEMU_PATH)
 	@echo "< ! > Building qemu ..."
 	@echo "< ? > Please be patient as this might take a while ..."
-	cd $<; ./configure --prefix=$(QEMU_OUT_PATH) --target-list=$(subst $(s),$(c),$(QEMU_TLIST)) 2> /dev/null 1> /dev/null
-	make -j $(N_JOBS) -C $< install 2> /dev/null 1> /dev/null
+	cd $<; ./configure --prefix=$(QEMU_OUT_PATH) --target-list=$(subst $(s),$(c),$(QEMU_TLIST)) $(QEMU_QUIET)
+	make -j $(N_JOBS) -C $< install $(QEMU_QUIET)
 	@echo "< ! > Cleaning up build space ..."
 	rm -rf $(QEMU_PATH)
 	@echo "< ! > Adding load_qemu alias to bashrc ..."

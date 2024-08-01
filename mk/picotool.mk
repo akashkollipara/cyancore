@@ -8,8 +8,8 @@
 # Organisation		: Cyancore Core-Team
 #
 
-PICO_SDK_GIT	:= git@github.com:raspberrypi/pico-sdk.git
-PICO_TOOL_GIT	:= git@github.com:raspberrypi/picotool.git
+PICO_SDK_GIT	:= https://github.com/raspberrypi/pico-sdk.git
+PICO_TOOL_GIT	:= https://github.com/raspberrypi/picotool.git
 PICO_SDK_PATH	:= $(TOOLS_ROOT)/pico-sdk/
 PICO_TOOL_PATH	:= $(TOOLS_ROOT)/picotool/
 PICO_TOOL	:= $(MISC_TOOLS)/picotool
@@ -18,10 +18,11 @@ ELF2UF2		:= $(MISC_TOOLS)/elf2uf2
 
 ifneq ($(V),1)
 SILENT_LOGS	:= > cbuild.log 2> /dev/null
+PICOTOOL_QUIET	:= 2>/dev/null 1>/dev/null
 endif
 
 P_TARGETS	+= elf2uf2
-T_ALLOWLIST	+= get_picotool clean_picotool install_pt_dep
+T_ALLOWLIST	+= get_picotool clean_picotool
 
 get_picotool: $(PICO_TOOL) $(ELF2UF2)
 
@@ -41,7 +42,7 @@ $(ELF2UF2): $(PICO_SDK_PATH)
 	@echo "< ! > Building elf2uf2 ..."
 	mkdir -p $(MISC_TOOLS)/temp
 	cd $(MISC_TOOLS)/temp; \
-	cmake $(PICO_SDK_PATH)/tools/elf2uf2 2>/dev/null >/dev/null; \
+	cmake $(PICO_SDK_PATH)/tools/elf2uf2 $(PICOTOOL_QUIET); \
 	make >/dev/null 2>/dev/null
 	cp $(MISC_TOOLS)/temp/elf2uf2 $@
 	rm -rf $(MISC_TOOLS)/temp
@@ -62,11 +63,6 @@ $(PICO_SDK_PATH):
 $(PICO_TOOL_PATH):
 	@echo "< ! > Fetching PICO Tool ..."
 	git clone $(PICO_TOOL_GIT) --quiet $@
-	@echo "< / > Done!"
-
-install_pt_dep:
-	@echo "< ! > Installing Dependencies ..."
-	@sudo apt-get install build-essential pkg-config libusb-1.0-0-dev -y -qq > /dev/null
 	@echo "< / > Done!"
 
 clean_picotool:
