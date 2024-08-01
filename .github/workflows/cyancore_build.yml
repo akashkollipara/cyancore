@@ -31,9 +31,7 @@ jobs:
 
       - name: Fetch Dependencies
         run: |
-          sudo apt install cppcheck ccache -y
-          make get_avr_tc
-          make get_riscv_tc
+          make setup_workspace
 
       - name: Init CodeQL
         uses: github/codeql-action/init@v3
