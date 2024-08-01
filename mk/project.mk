@@ -17,8 +17,8 @@ include mk/mk_helper.mk
 include mk/qemu.mk
 include mk/picotool.mk
 
-P_TARGETS	+= default cyancore check version copy_to_remote clean_remote
-T_ALLOWLIST	+= list clean all_projects
+P_TARGETS	+= default cyancore check version copy_to_remote clean_remote clean
+T_ALLOWLIST	+= list all_projects clean_workspace setup_workspace
 PROJECT_LIST	:= $(shell ls projects/ -I *.template -I *.src)
 
 .PHONY: aux_target
@@ -33,12 +33,18 @@ all_projects:
 		make $$project;		\
 	done
 
-cyancore: version elf
+cyancore: --prepare-cache version elf
 	$(info < / > Done !)
 
 clean:
 	$(info < ! > Removing $(PROJECT) binaries ...)
 	rm -rf $(OUT)
+
+setup_workspace: | --install_os_pkgs $(SIZE) get_all_tc
+
+clean_workspace: clean
+	$(info < / > Cleaning up workspace ...)
+	rm -rf $(OUT_PATH) $(CCACHE_DIR) $(TOOLS_ROOT)
 
 list:
 	$(info Available projects are :)
@@ -50,8 +56,8 @@ copy_to_remote: --cpremote
 clean_remote: --rmremote
 
 
-ifeq ($(findstring $(MAKECMDGOALS),$(T_ALLOWLIST)),)
-ifeq ($(findstring $(firstword $(MAKECMDGOALS)),$(P_TARGETS)),)
+ifeq ($(filter $(MAKECMDGOALS),$(T_ALLOWLIST)),)
+ifeq ($(filter $(firstword $(MAKECMDGOALS)),$(P_TARGETS)),)
 PROJECT		?= $(firstword $(MAKECMDGOALS))
 CMD		:= $(word 2,$(MAKECMDGOALS))
 ifeq ($(CMD),)

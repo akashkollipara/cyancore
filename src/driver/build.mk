@@ -1,6 +1,6 @@
 #
 # CYANCORE LICENSE
-# Copyrights (C) 2019, Cyancore Team
+# Copyrights (C) 2024, Cyancore Team
 #
 # File Name		: build.mk
 # Description		: This file accumulates the build scripts from
@@ -15,6 +15,7 @@ DRIVER_PATH	:= $(GET_PATH)
 include $(DRIVER_PATH)/interrupt/build.mk
 include $(DRIVER_PATH)/watchdog/build.mk
 include $(DRIVER_PATH)/console/build.mk
+include $(DRIVER_PATH)/schedclk/build.mk
 
 #==========< User Config Drivers >==========#
 $(eval $(call check_and_include,SYSCLK_ENABLE,$(DRIVER_PATH)/sysclk/build.mk))

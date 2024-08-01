@@ -50,7 +50,7 @@ unsigned long gcd(unsigned long a, unsigned long b)
  *
  * @return lcm: returns the LCM of the elements in the array
  */
-unsigned long lcm(unsigned int *a, unsigned int n)
+unsigned long lcm(const unsigned int *a, unsigned int n)
 {
 	unsigned long ret = a[0];
 	unsigned int i;

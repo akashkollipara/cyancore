@@ -20,7 +20,7 @@
 INFO(< I > Using ICLK = 72Mhz)
 #endif
 
-status_t _NOINLINE prci_hfxocs_enable(sysclk_port_t *port)
+status_t _NOINLINE prci_hfxocs_enable(const sysclk_port_t *port)
 {
 	/* Enable External Crystal Osc (xtal) */
 	MMIO32(port->baddr + HFXOSCCFG_OFFSET) |= (1U << HFXOSCEN);
@@ -30,7 +30,7 @@ status_t _NOINLINE prci_hfxocs_enable(sysclk_port_t *port)
 		success : error_system;
 }
 
-status_t _NOINLINE prci_hfxocs_disable(sysclk_port_t *port)
+status_t _NOINLINE prci_hfxocs_disable(const sysclk_port_t *port)
 {
 	/* Disable External Crystal Osc (xtal) */
 	MMIO32(port->baddr + HFXOSCCFG_OFFSET) &= ~(1U << HFXOSCEN);
@@ -38,7 +38,7 @@ status_t _NOINLINE prci_hfxocs_disable(sysclk_port_t *port)
 		error_system : success;
 }
 
-status_t _NOINLINE prci_hfosc_enable(sysclk_port_t *port)
+status_t _NOINLINE prci_hfosc_enable(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + HFROSCCFG_OFFSET) |= (1U << HFROSCEN);
 	while(!(MMIO32(port->baddr + HFROSCCFG_OFFSET) & (1U << HFROSCRDY)));
@@ -46,14 +46,14 @@ status_t _NOINLINE prci_hfosc_enable(sysclk_port_t *port)
 		success : error_system;
 }
 
-status_t _NOINLINE prci_hfosc_disable(sysclk_port_t *port)
+status_t _NOINLINE prci_hfosc_disable(const sysclk_port_t *port)
 {
 	MMIO32(port->baddr + HFROSCCFG_OFFSET) &= ~(1U << HFROSCEN);
 	return (MMIO32(port->baddr + HFROSCCFG_OFFSET) & (1U << HFROSCEN)) ?
 		error_system : success;
 }
 
-status_t _NOINLINE prci_hfosc_set_clk(sysclk_port_t *port, unsigned int clk)
+status_t _NOINLINE prci_hfosc_set_clk(const sysclk_port_t *port, unsigned int clk)
 {
 	unsigned int hfrosc;
 	unsigned int divdr = ICLK / clk;
@@ -68,7 +68,7 @@ status_t _NOINLINE prci_hfosc_set_clk(sysclk_port_t *port, unsigned int clk)
 		divdr) ? success : error_system;
 }
 
-status_t _NOINLINE prci_hfosc_get_clk(sysclk_port_t *port, unsigned int *clk)
+status_t _NOINLINE prci_hfosc_get_clk(const sysclk_port_t *port, unsigned int *clk)
 {
 	unsigned int hfrosc;
 	unsigned int divdr;
@@ -85,7 +85,7 @@ status_t _NOINLINE prci_hfosc_get_clk(sysclk_port_t *port, unsigned int *clk)
  * - Avoid calling this function
  * - This function is untested
  */
-status_t _NOINLINE prci_hfosc_set_trim(sysclk_port_t *port, unsigned int trim)
+status_t _NOINLINE prci_hfosc_set_trim(const sysclk_port_t *port, unsigned int trim)
 {
 	unsigned int hfrosc;
 

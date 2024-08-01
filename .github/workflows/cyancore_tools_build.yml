@@ -1,0 +1,38 @@
+name: Cyancore Tools Build
+
+on:
+  pull_request:
+    branches: [ stable ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      statuses: write
+
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Git
+        env:
+          TOKEN: ${{ secrets.AKASH_VF }}
+        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+
+      - name: Fetch Dependencies
+        run: |
+          make setup_workspace
+
+      - name: Tools Build
+        run: |
+          make get_qemu V=1
+          make get_picotool V=1
+
+      - name: Clean Up
+        run: |
+          make clean_workspace

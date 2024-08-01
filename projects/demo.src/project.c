@@ -11,7 +11,7 @@
 #include <status.h>
 #include <stdio.h>
 #include <string.h>
-#include <terravisor/bootstrap.h>
+#include <visor/bootstrap.h>
 #include <driver.h>
 #include <driver/onboardled.h>
 #include <time.h>
@@ -29,7 +29,7 @@ void plug()
 void play()
 {
 	static unsigned char i = 0;
-	char progress[] = "-\\|/";
+	const char progress[] = "-\\|/";
 	uint64_t time;
 	char c = progress[(i++) % strlen(progress)];
 	get_timestamp(&time);

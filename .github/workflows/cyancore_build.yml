@@ -1,0 +1,61 @@
+name: Cyancore Build
+
+on:
+  push:
+    branches: [ stable, development, helios_stage]
+
+  pull_request:
+    branches: [ stable, development, helios_stage]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      statuses: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: ["cpp"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Git
+        env:
+          TOKEN: ${{ secrets.AKASH_VF }}
+        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+
+      - name: Fetch Dependencies
+        run: |
+          make setup_workspace
+
+      - name: Init CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          debug: true
+
+      - name: Build
+        run: |
+          make demo_avr
+          make demo_avr_cpp
+          make demo_riscv
+          make demo_helios_avr
+          make demo_helios_riscv
+          make demo_qemu_sifive_e
+          make demo_ibex_ss
+
+      - name: Build Cache Stats
+        run: |
+          make show_ccache_stats
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      - name: Clean Up
+        run: |
+          make clean_workspace

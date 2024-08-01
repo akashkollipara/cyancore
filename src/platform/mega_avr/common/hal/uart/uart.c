@@ -47,7 +47,7 @@ status_t uart_setup(uart_port_t *port, direction_t d, parity_t p)
 	arch_visor_call(fetch_dp, clock, 0, 0, &vres);
 	if(vres.status != success)
 		return vres.status;
-	unsigned long *clk = (unsigned long *)vres.p;
+	const unsigned long *clk = (unsigned long *)vres.p;
 
 
 	// Enable module based on direction

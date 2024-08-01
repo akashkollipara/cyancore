@@ -29,7 +29,7 @@
  * @param[in] port: Pointer to the ADC port structure
  */
 
-static inline void _adc_enable(adc_port_t *port)
+static inline void _adc_enable(const adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) |= (1 << ADEN);
 }
@@ -42,7 +42,7 @@ static inline void _adc_enable(adc_port_t *port)
  * @param[in] port: Pointer to the ADC port structure
  */
 
-static inline void _adc_disable(adc_port_t *port)
+static inline void _adc_disable(const adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) &= ~(1 << ADEN);
 }
@@ -57,7 +57,7 @@ static inline void _adc_disable(adc_port_t *port)
  * @return status: Status of prescaler setup operation
  */
 
-static inline status_t _adc_set_prescaler(adc_port_t *port)
+static inline status_t _adc_set_prescaler(const adc_port_t *port)
 {
 	uint8_t pscale_value = 0;
 	status_t ret = success;
@@ -99,7 +99,7 @@ static inline status_t _adc_set_prescaler(adc_port_t *port)
  * @param[in] port: Pointer to the ADC port structure
  */
 
-static inline void _adc_start_conv(adc_port_t *port)
+static inline void _adc_start_conv(const adc_port_t *port)
 {
 	MMIO8(port->baddr + ADCSRA_OFFSET) |= (1 << ADSC);
 }
@@ -115,7 +115,7 @@ static inline void _adc_start_conv(adc_port_t *port)
  * @return status: Status of trigger configuration operation
  */
 
-static inline status_t _adc_config_trigger(adc_port_t *port, adc_trig_t trigger)
+static inline status_t _adc_config_trigger(const adc_port_t *port, adc_trig_t trigger)
 {
 	status_t ret = success;
 	uint8_t trig_value = (uint8_t) trigger;
@@ -137,7 +137,7 @@ static inline status_t _adc_config_trigger(adc_port_t *port, adc_trig_t trigger)
  * @return status: Status of resolution configuration operation
  */
 
-static inline status_t _adc_config_resolution(adc_port_t *port, uint8_t resolution)
+static inline status_t _adc_config_resolution(const adc_port_t *port, uint8_t resolution)
 {
 	status_t ret = success;
 	if(resolution == 8)
@@ -158,7 +158,7 @@ static inline status_t _adc_config_resolution(adc_port_t *port, uint8_t resoluti
  * @return status: Status of voltage reference configuration operation
  */
 
-static inline status_t _adc_config_vref(adc_port_t *port, adc_ref_t vref)
+static inline status_t _adc_config_vref(const adc_port_t *port, adc_ref_t vref)
 {
 	status_t ret = success;
 	uint8_t value = 0;
@@ -216,7 +216,7 @@ status_t adc_setup(adc_port_t *port)
  * @return status: Status of shutdown operation
  */
 
-status_t adc_shutdown(adc_port_t *port)
+status_t adc_shutdown(const adc_port_t *port)
 {
 	status_t ret = success;
 	STATUS_CHECK_POINTER(port);
@@ -236,7 +236,7 @@ status_t adc_shutdown(adc_port_t *port)
  * @return state: State of ADC busy status
  */
 
-bool adc_busy(adc_port_t *port)
+bool adc_busy(const adc_port_t *port)
 {
 	bool ret;
 	assert(port);
@@ -254,7 +254,7 @@ bool adc_busy(adc_port_t *port)
  * @return status: Status of interrupt enable operation
  */
 
-status_t adc_int_en(adc_port_t *port)
+status_t adc_int_en(const adc_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + ADCSRA_OFFSET) |= (1 << ADIE);
@@ -271,7 +271,7 @@ status_t adc_int_en(adc_port_t *port)
  * @return status: Status of interrupt disable operation
  */
 
-status_t adc_int_dis(adc_port_t *port)
+status_t adc_int_dis(const adc_port_t *port)
 {
 	STATUS_CHECK_POINTER(port);
 	MMIO8(port->baddr + ADCSRA_OFFSET) &= ~(1 << ADIE);
@@ -292,7 +292,7 @@ status_t adc_int_dis(adc_port_t *port)
  * @return status: Status of pin configuration operation
  */
 
-status_t adc_config_pin(adc_port_t *port, uint8_t pin, adc_trig_t trigger, uint8_t resolution, adc_ref_t vref)
+status_t adc_config_pin(const adc_port_t *port, uint8_t pin, adc_trig_t trigger, uint8_t resolution, adc_ref_t vref)
 {
 	status_t ret = success;
 	STATUS_CHECK_POINTER(port);
@@ -317,7 +317,7 @@ status_t adc_config_pin(adc_port_t *port, uint8_t pin, adc_trig_t trigger, uint8
  * @return status: Status of read operation
  */
 
-status_t adc_read(adc_port_t *port, uint16_t *adc_val)
+status_t adc_read(const adc_port_t *port, uint16_t *adc_val)
 {
 	status_t ret = success;
 	STATUS_CHECK_POINTER(port);
@@ -351,7 +351,7 @@ status_t adc_read(adc_port_t *port, uint16_t *adc_val)
 status_t adc_temperature_convert(uint16_t raw_adc, float *temperature)
 {
 	status_t ret = success;
-	unsigned long scaled_val = raw_adc * 1000;
+	unsigned long scaled_val = (unsigned long)raw_adc * 1000;
 	*temperature = ((float)(scaled_val - CTO) / CTK);
 	return ret;
 }
