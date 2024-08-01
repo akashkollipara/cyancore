@@ -30,7 +30,7 @@ jobs:
 
       - name: Tools Build
         run: |
-          # make get_qemu V=1
+          make get_qemu V=1
           make get_picotool V=1
 
       - name: Clean Up
