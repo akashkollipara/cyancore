@@ -1,6 +1,6 @@
 #
 # CYANCORE LICENSE
-# Copyrights (C) 2019-2022, Cyancore Team
+# Copyrights (C) 2024, Cyancore Team
 #
 # File Name		: banner.mk
 # Description		: This script prints banner while starting build
@@ -8,8 +8,8 @@
 # Organisation		: Cyancore Core-Team
 #
 
-NAME		= Boron
-VERSION		= 0x01000401
+NAME		= Carbon
+VERSION		= 0x01000500
 
 $(eval $(call add_define,VERSION))
 

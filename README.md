@@ -12,7 +12,7 @@
     </div>
 </body>
 
-> **Version (arch:2 | major:4 | minor:2): 1.4.1**
+> **Version (arch:2 | major:4 | minor:2): 1.5.0**
 
 [![CC Build](https://github.com/VisorFolks/cyancore/actions/workflows/cyancore_build.yml/badge.svg)](https://github.com/VisorFolks/cyancore/actions/workflows/cyancore_build.yml) [![CC Tools Build](https://github.com/VisorFolks/cyancore/actions/workflows/cyancore_tools_build.yml/badge.svg)](https://github.com/VisorFolks/cyancore/actions/workflows/cyancore_tools_build.yml) [![Discord](https://img.shields.io/discord/859140196498014238?style=flat&logo=discord&logoSize=auto&label=VF%20Server)](https://discord.gg/gxUQr77MT2)
 
