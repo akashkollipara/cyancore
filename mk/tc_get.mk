@@ -12,7 +12,7 @@ include mk/path.mk
 
 T_ALLOWLIST	+= get_all_tc get_avr_tc get_arm_tc get_riscv_tc
 
-OSDEPPKGS	:= build-essential pkg-config libusb-1.0-0-dev cppcheck ccache
+OSDEPPKGS	:= build-essential pkg-config libusb-1.0-0-dev cmake cppcheck ccache
 OSDEPPKGS	+= tree ninja-build libpixman-1-dev libcairo2-dev libpango1.0-dev
 OSDEPPKGS	+= libjpeg8-dev libgif-dev libglib2.0-dev libgcrypt20-dev python3-venv
 

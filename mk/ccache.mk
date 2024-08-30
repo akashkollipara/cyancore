@@ -12,14 +12,14 @@
 #--------------< Build Cache >--------------#
 #*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*#
 
-CCACHE_DIR			:= $(CC_ROOT)/.buildcache
+CCACHE_ROOT			:= $(CC_ROOT)/.buildcache
 
 # For Flags read ccache documentation
 CCACHE_ABSSTDERR		:= true
 export CCACHE_ABSSTDERR
 CCACHE_BASEDIR			:=
 export CCACHE_BASEDIR
-CCACHE_DIR			:= $(CCACHE_DIR)/cache
+CCACHE_DIR			:= $(CCACHE_ROOT)/cache
 export CCACHE_DIR
 CCACHE_COMPILER			:=
 export CCACHE_COMPILER

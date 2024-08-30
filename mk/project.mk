@@ -44,7 +44,7 @@ setup_workspace: | --install_os_pkgs $(SIZE) get_all_tc
 
 clean_workspace: clean
 	$(info < / > Cleaning up workspace ...)
-	rm -rf $(OUT_PATH) $(CCACHE_DIR) $(TOOLS_ROOT)
+	rm -rf $(OUT_PATH) $(CCACHE_ROOT) $(TOOLS_ROOT)
 
 list:
 	$(info Available projects are :)
